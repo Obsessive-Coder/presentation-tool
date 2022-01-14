@@ -1,0 +1,1 @@
+export * as FIREBASE_ADMIN from './admin'

@@ -1,11 +1,11 @@
 {
   "name": "presentation-tool",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "homepage": "https://obsessive-coder.github.io/live-presentation-tool",
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -r https://github.com/Obsessive-Coder/live-presentation-tool.git -b main -d build",
+    "deploy-dev": "gh-pages -r https://github.com/Obsessive-Coder/live-presentation-tool.git -b main -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -33,11 +33,16 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "firebase": "^9.6.3",
+    "firebase-admin": "^10.0.1",
     "gh-pages": "^3.2.3",
+    "js-cookie": "^3.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-firebaseui": "^6.0.0",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "styled-components": "^5.3.3",
     "web-vitals": "^2.1.3"
   }
 }
