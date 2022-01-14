@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 // Components.
 import { Link, Route, Routes, useNavigate } from 'react-router-dom'
-// import { FirebaseAuth } from './components/auth'
+import { Box } from '@mui/material'
 import { Authentication, Home } from './pages'
-import { Navbar } from './components'
+import { Navbar, NavDrawer } from './components'
 import { Route1, Route2 } from './routes'
 
 // Styles, utils, and other helpers.
@@ -13,6 +13,7 @@ import { FIREBASE_AUTH } from './utils/firebase/admin'
 
 function App() {
   const navigate = useNavigate()
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [user, setUser] = useState({})
 
   onAuthStateChanged(FIREBASE_AUTH, (currentUser) => {
@@ -24,36 +25,43 @@ function App() {
     navigate('/')
   }
 
+  const handleDrawerToggle = () => {
+    setIsDrawerOpen(!isDrawerOpen)
+  }
+
   const isUserAuthenticated = user?.email !== null && user?.email !== undefined
 
   return (
     <div>
-      <header>
-        <h1>Presentation Tool</h1>
+      <Navbar isUserAuthenticated={isUserAuthenticated} handleDrawerToggle={handleDrawerToggle}>
+      </Navbar>
 
-        <Navbar isUserAuthenticated={isUserAuthenticated} handleDrawerToggle={() => null}></Navbar>
-
-        {/* <nav>
-          <Link to="/route1">Route 1</Link>{' '}
-          <Link to="/route2">Route 2</Link>
-          <button onClick={logoutUser}>Logout</button>
-        </nav> */}
-      </header>
-
-      <Routes>
-        {isUserAuthenticated ? (
-          <>
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/route1" element={<Route1 />} />
-            <Route exact path="/route2" element={<Route2 />} />
-          </>
-        ) : (
-          <>
-            <Route path="/*" element={<Authentication />} />
-          </>
+      <Box display="flex">
+        {isUserAuthenticated && (
+          <NavDrawer
+            isOpen={isDrawerOpen}
+            handleDrawerToggle={handleDrawerToggle}
+            handleLogout={logoutUser}
+          />
         )}
 
-      </Routes>
+        <Box flexGrow={1} mt={6} p={3} pb={20}>
+          <Routes>
+            {isUserAuthenticated ? (
+              <>
+                <Route exact path="/" element={<Home />} />
+                <Route exact path="/presentations" element={<Route1 />} />
+                <Route exact path="/slides" element={<Route2 />} />
+              </>
+            ) : (
+              <>
+                <Route path="/*" element={<Authentication />} />
+              </>
+            )}
+
+          </Routes>
+        </Box>
+      </Box>
     </div>
   );
 }

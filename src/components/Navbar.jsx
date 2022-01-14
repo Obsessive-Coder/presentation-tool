@@ -40,8 +40,11 @@ export default function Navbar({ handleDrawerToggle, isUserAuthenticated, childr
         <Typography
           variant="h4"
           component="div"
-          style={{ textTransform: 'capitalize', color: '#542989' }}
-          sx={{ display: { xs: 'none', sm: 'initial' } }}
+          sx={{
+            display: { xs: 'none', sm: 'initial' },
+            textTransform: 'capitalize',
+            color: '#542989'
+          }}
         >
           {pathname === '/' ? 'Welcome' : pathname.replace('/', '')}
         </Typography>
