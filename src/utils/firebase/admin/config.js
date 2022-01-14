@@ -13,4 +13,6 @@ const credentials = {
 
 const app = initializeApp(credentials)
 
-export const auth = getAuth(app)
+const auth = getAuth(app)
+
+export default auth

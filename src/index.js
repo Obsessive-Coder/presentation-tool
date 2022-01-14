@@ -1,10 +1,8 @@
 import React from 'react';
 
 // Components.
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { SignUp, Home } from './pages'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App';
-import { Route1, Route2 } from './routes'
 
 // Utils, styles, and other helpers.
 import ReactDOM from 'react-dom';
@@ -13,15 +11,9 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
-    {/* <BrowserRouter basename="/live-presentation-tool">
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/signup" element={<SignUp />} />
-        <Route exact path="/route1" element={<Route1 />} />
-        <Route exact path="/route2" element={<Route2 />} />
-      </Routes>
-    </BrowserRouter> */}
+    <BrowserRouter basename="/live-presentation-tool">
+      <App />
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
