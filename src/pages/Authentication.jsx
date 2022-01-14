@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 // Components.
+import { Box, Button, TextField } from '@mui/material'
 
 // Styles, utils, and other helpers.
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
@@ -13,11 +14,14 @@ export default function Authentication() {
   const [authView, setAuthView] = useState('login')
   const isLoginView = authView === 'login'
 
-  const handleSubmitCredentials = async () => {
+  const handleSubmitCredentials = async (event) => {
+    event.preventDefault()
+
     try {
       const { email, password } = formData
       const isLoginView = authView === 'login'
       const authMethod = isLoginView ? signInWithEmailAndPassword : createUserWithEmailAndPassword
+      console.log(isLoginView, authMethod, email, password)
       await authMethod(FIREBASE_AUTH, email.toLowerCase().trim(), password.trim())
     } catch (error) {
       console.log(error.message)
@@ -34,34 +38,47 @@ export default function Authentication() {
   }
 
   return (
-    <div>
-      <div>
-        <h3 style={{ textTransform: 'capitalize' }}>{authView}</h3>
+    <Box
+      component="form"
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      onSubmit={handleSubmitCredentials}
+      sx={{ textAlign: 'center', width: '25%', margin: 'auto', pb: '2rem', px: '2rem', border: 'thin solid #542989', borderRadius: 3 }}
+    >
+      <h2 style={{ textTransform: 'capitalize', color: '#542989' }}>{authView}</h2>
 
-        <input
-          placeholder="Email"
-          onChange={(event) => handleInputOnChange(event, 'email')}
-        />
+      <TextField
+        required
+        label="Email"
+        placeholder="example@email.com"
+        onChange={(event) => handleInputOnChange(event, 'email')}
+        sx={{ my: '1rem' }}
+      />
 
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(event) => handleInputOnChange(event, 'password')}
-        />
+      <TextField
+        required
+        type="password"
+        label="Password"
+        helperText="Must be at least 6 characters long"
+        FormHelperTextProps={{ style: { fontWeight: 'bold' } }}
+        onChange={(event) => handleInputOnChange(event, 'password')}
+        sx={{ my: '1rem' }}
+      />
 
-        <button
-          onClick={handleSubmitCredentials}
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Button type="button" color="info" onClick={() => setAuthView(isLoginView ? 'register' : 'login')}>
+          {isLoginView ? 'Sign up if you don\'t have an account' : 'Login if you already have an account'}
+        </Button>
+
+        <Button
+          type="submit"
+          variant="contained"
           style={{ textTransform: 'capitalize' }}
         >
           {authView}
-        </button>
-
-        <br />
-
-        <button onClick={() => setAuthView(isLoginView ? 'register' : 'login')}>
-          {isLoginView ? 'Sign up if you don\'t have an account' : 'Login if you already have an account'}
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Box>
+    </Box>
   )
 }

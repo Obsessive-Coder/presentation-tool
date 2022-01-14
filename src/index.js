@@ -2,17 +2,31 @@ import React from 'react';
 
 // Components.
 import { BrowserRouter } from 'react-router-dom'
-import App from './App';
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import App from './App'
 
 // Utils, styles, and other helpers.
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom'
 import './index.css';
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from './reportWebVitals'
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#542989'
+    },
+    secondary: {
+      main: '#6c9730'
+    }
+  }
+})
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter basename="/live-presentation-tool">
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

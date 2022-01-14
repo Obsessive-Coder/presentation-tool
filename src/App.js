@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Link, Route, Routes, useNavigate } from 'react-router-dom'
 // import { FirebaseAuth } from './components/auth'
 import { Authentication, Home } from './pages'
+import { Navbar } from './components'
 import { Route1, Route2 } from './routes'
 
 // Styles, utils, and other helpers.
@@ -23,21 +24,24 @@ function App() {
     navigate('/')
   }
 
+  const isUserAuthenticated = user?.email !== null && user?.email !== undefined
 
   return (
     <div>
       <header>
         <h1>Presentation Tool</h1>
 
-        <nav>
+        <Navbar isUserAuthenticated={isUserAuthenticated} handleDrawerToggle={() => null}></Navbar>
+
+        {/* <nav>
           <Link to="/route1">Route 1</Link>{' '}
           <Link to="/route2">Route 2</Link>
           <button onClick={logoutUser}>Logout</button>
-        </nav>
+        </nav> */}
       </header>
 
       <Routes>
-        {user?.email ? (
+        {isUserAuthenticated ? (
           <>
             <Route exact path="/" element={<Home />} />
             <Route exact path="/route1" element={<Route1 />} />
