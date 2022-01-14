@@ -6,13 +6,13 @@ import App from './App';
 import { Route1, Route2 } from './routes'
 
 // Utils, styles, and other helpers.
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-render(
+ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/live-presentation-tool">
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/route1" element={<Route1 />} />
