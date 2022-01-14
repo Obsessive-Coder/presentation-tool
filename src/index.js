@@ -1,9 +1,8 @@
 import React from 'react';
 
 // Components.
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App';
-import { Route1, Route2 } from './routes'
 
 // Utils, styles, and other helpers.
 import ReactDOM from 'react-dom';
@@ -13,11 +12,7 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter basename="/live-presentation-tool">
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/route1" element={<Route1 />} />
-        <Route path="/route2" element={<Route2 />} />
-      </Routes>
+      <App />
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
