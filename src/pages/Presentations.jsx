@@ -77,7 +77,7 @@ export default function Presentations() {
         setAlertData({
           isOpen: true,
           severity: 'error',
-          message: `Error retrieving data from the database. Please try again later.\n${JSON.stringify('error')}`
+          message: `Error retrieving data from the database. Please try again later.\n${JSON.stringify(error)}`
         })
       })
   }, [])

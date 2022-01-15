@@ -3,7 +3,7 @@ import { useState } from 'react'
 // Components.
 import { Link, Route, Routes, useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
-import { Authentication, Home, Presentations } from './pages'
+import { Authentication, Home, Presentations, Slides } from './pages'
 import { Navbar, NavDrawer } from './components'
 
 // Styles, utils, and other helpers.
@@ -44,13 +44,13 @@ function App() {
           />
         )}
 
-        <Box flexGrow={1} mt={6} px={3} pt={5} pb={20}>
+        <Box flexGrow={1} mt={6} px={3} pt={5} pb={40}>
           <Routes>
             {isUserAuthenticated ? (
               <>
                 <Route exact path="/" element={<Home />} />
                 <Route exact path="/presentations" element={<Presentations />} />
-                {/* <Route exact path="/slides" element={<Route2 />} /> */}
+                <Route exact path="/slides" element={<Slides />} />
               </>
             ) : (
               <>
@@ -60,25 +60,6 @@ function App() {
 
           </Routes>
         </Box>
-      </Box>
-
-      {/* TODO: Remove this when accepted as complete. */}
-      <Box
-        component="footer"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        flex={1}
-        py={2}
-        borderTop="1px solid #eaeaea"
-      >
-        <a
-          href="https://github.com/Obsessive-Coder"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Created by Jared Huffstutler
-        </a>
       </Box>
     </div>
   );
