@@ -1,2 +1,5 @@
 export { default as Navbar } from './Navbar'
 export { default as NavDrawer } from './NavDrawer'
+export { default as PresentationsTable } from './PresentationsTable'
+export { default as PresentationView } from './PresentationView'
+export { default as SlideCarousel } from './SlideCarousel'

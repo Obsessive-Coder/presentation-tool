@@ -3,9 +3,8 @@ import { useState } from 'react'
 // Components.
 import { Link, Route, Routes, useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
-import { Authentication, Home } from './pages'
+import { Authentication, Home, Presentations } from './pages'
 import { Navbar, NavDrawer } from './components'
-import { Route1, Route2 } from './routes'
 
 // Styles, utils, and other helpers.
 import { onAuthStateChanged, signOut } from 'firebase/auth'
@@ -45,13 +44,13 @@ function App() {
           />
         )}
 
-        <Box flexGrow={1} mt={6} p={3} pb={20}>
+        <Box flexGrow={1} mt={6} px={3} pt={5} pb={20}>
           <Routes>
             {isUserAuthenticated ? (
               <>
                 <Route exact path="/" element={<Home />} />
-                <Route exact path="/presentations" element={<Route1 />} />
-                <Route exact path="/slides" element={<Route2 />} />
+                <Route exact path="/presentations" element={<Presentations />} />
+                {/* <Route exact path="/slides" element={<Route2 />} /> */}
               </>
             ) : (
               <>
@@ -61,6 +60,25 @@ function App() {
 
           </Routes>
         </Box>
+      </Box>
+
+      {/* TODO: Remove this when accepted as complete. */}
+      <Box
+        component="footer"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flex={1}
+        py={2}
+        borderTop="1px solid #eaeaea"
+      >
+        <a
+          href="https://github.com/Obsessive-Coder"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Created by Jared Huffstutler
+        </a>
       </Box>
     </div>
   );

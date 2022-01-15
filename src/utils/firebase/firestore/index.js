@@ -1,0 +1,1 @@
+export { default as READ_FIRESTORE_DATA } from './readData'
