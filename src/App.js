@@ -1,11 +1,10 @@
 import { useState } from 'react'
 
 // Components.
-import { Link, Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
-import { Authentication, Home } from './pages'
+import { Authentication, Help, Home, Presentations, Slides } from './pages'
 import { Navbar, NavDrawer } from './components'
-import { Route1, Route2 } from './routes'
 
 // Styles, utils, and other helpers.
 import { onAuthStateChanged, signOut } from 'firebase/auth'
@@ -45,13 +44,14 @@ function App() {
           />
         )}
 
-        <Box flexGrow={1} mt={6} p={3} pb={20}>
+        <Box flexGrow={1} mt={6} px={3} pt={5} pb={40}>
           <Routes>
             {isUserAuthenticated ? (
               <>
                 <Route exact path="/" element={<Home />} />
-                <Route exact path="/presentations" element={<Route1 />} />
-                <Route exact path="/slides" element={<Route2 />} />
+                <Route exact path="/presentations" element={<Presentations />} />
+                <Route exact path="/slides" element={<Slides />} />
+                <Route exact path="/help" element={<Help />} />
               </>
             ) : (
               <>

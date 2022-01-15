@@ -21,7 +21,6 @@ export default function Authentication() {
       const { email, password } = formData
       const isLoginView = authView === 'login'
       const authMethod = isLoginView ? signInWithEmailAndPassword : createUserWithEmailAndPassword
-      console.log(isLoginView, authMethod, email, password)
       await authMethod(FIREBASE_AUTH, email.toLowerCase().trim(), password.trim())
     } catch (error) {
       console.log(error.message)

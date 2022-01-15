@@ -67,7 +67,7 @@ export default function NavDrawer({ isOpen, handleDrawerToggle, handleLogout }) 
 
             <Divider />
 
-            <List style={{ overflowX: 'hidden' }}>
+            <List style={{ overflowX: 'hidden', position: 'relative' }}>
               {NAV_LINKS.map((label) => (
                 <ListItem button key={`${label}-nav-link`}>
                   <Link
@@ -99,10 +99,23 @@ export default function NavDrawer({ isOpen, handleDrawerToggle, handleLogout }) 
                   )}
                 />
               </ListItem>
+
+              {/* TODO: Remove this when accepted as complete. */}
+              <ListItem sx={{ position: 'fixed', bottom: 0 }}>
+                <Box component="footer">
+                  <a
+                    href="https://github.com/Obsessive-Coder"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Created by Jared Huffstutler
+                  </a>
+                </Box>
+              </ListItem>
             </List>
           </Box>
         </Drawer>
-      </Box>
-    </Box>
+      </Box >
+    </Box >
   )
 }

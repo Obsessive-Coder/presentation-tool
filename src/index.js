@@ -13,10 +13,14 @@ import reportWebVitals from './reportWebVitals'
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#542989'
+      light: '#542989',
+      main: '#542989',
+      dark: '#542989'
     },
     secondary: {
-      main: '#6c9730'
+      light: '#6c9730',
+      main: '#6c9730',
+      dark: '#6c9730'
     }
   }
 })
