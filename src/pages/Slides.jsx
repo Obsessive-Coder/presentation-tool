@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react'
 
 // Components.
 import { Alert, AlertTitle, Box, Grid, Pagination, Snackbar, Stack } from '@mui/material'
-
-// TODO: Create and import the required components.
-import { PresentationPreview, SlideCard } from '../components'
+import { FilterAccordion, PresentationPreview, SlideCard, SortDropdown } from '../components'
 
 // Styles, utils, and other helpers.
 import { sort } from 'fast-sort'
@@ -66,7 +64,7 @@ export default function Slides() {
   const handleFilter = (filters) => {
     // TODO: Special filters for types and form and md products.
 
-    alert('filter existing data')
+
   }
 
   const handleAddRemoveSlide = (event) => {
@@ -176,17 +174,17 @@ export default function Slides() {
   return (
     <main>
       <Box>
-        <Box display="flex" alignItems="flex-start" mt={2}>
+        <Box display="flex" alignItems="flex-start" mb={2}>
           <Box flex={1}>
-            {/* <FilterAccordion
+            <FilterAccordion
               setAlertData={setAlertData}
               handleFilter={handleFilter}
               handleSort={handleSort}
-            /> */}
+            />
           </Box>
 
           <Box>
-            {/* <SortDropdown handleSort={handleSort} /> */}
+            <SortDropdown handleSort={handleSort} />
           </Box>
         </Box>
 
