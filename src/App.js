@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
 // Components.
-import { Link, Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
-import { Authentication, Home, Presentations, Slides } from './pages'
+import { Authentication, Help, Home, Presentations, Slides } from './pages'
 import { Navbar, NavDrawer } from './components'
 
 // Styles, utils, and other helpers.
@@ -51,6 +51,7 @@ function App() {
                 <Route exact path="/" element={<Home />} />
                 <Route exact path="/presentations" element={<Presentations />} />
                 <Route exact path="/slides" element={<Slides />} />
+                <Route exact path="/help" element={<Help />} />
               </>
             ) : (
               <>
