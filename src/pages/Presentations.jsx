@@ -6,7 +6,7 @@ import { Alert, AlertTitle, Box, Snackbar, Typography } from '@mui/material'
 import { PresentationsTable, PresentationView } from '../components'
 
 // Styles, utils, and other helpers.
-import { READ_FIRESTORE_DATA } from '../utils/firebase/firestore'
+import { DELETE_FIRESTORE_DATA, READ_FIRESTORE_DATA } from '../utils/firebase/firestore'
 
 export default function Presentations() {
   const [isLoading, setIsLoading] = useState(true)
@@ -33,7 +33,29 @@ export default function Presentations() {
   }
 
   const handleDeletePresentation = (presentationId, presentationName) => {
+    const isDeleteConfirmed = window
+      .confirm(`Are you sure you want to delete '${presentationName}'?`)
 
+    if (isDeleteConfirmed) {
+      const updatedPresentations = presentations.filter(({ id }) => id !== presentationId)
+      setPresentations(updatedPresentations)
+
+      DELETE_FIRESTORE_DATA('presentations', presentationId)
+        .then(() => {
+          setAlertData({
+            isOpen: true,
+            severity: 'success',
+            message: 'Successfully deleted the presentation'
+          })
+        })
+        .catch(error => {
+          setAlertData({
+            isOpen: true,
+            severity: 'danger',
+            message: `Error retrieving data from the database. Please try again later.\n${JSON.stringify(error)}`
+          })
+        })
+    }
   }
 
   useEffect(() => {
