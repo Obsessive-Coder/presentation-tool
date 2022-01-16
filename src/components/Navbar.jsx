@@ -1,9 +1,10 @@
 // TODO: use react router.
 
 // Components.
-import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import Search from './Search'
+import CreateSlide from './CreateSlide'
 
 // Styles, utils, and other helpers.
 import { useLocation } from 'react-router-dom'
@@ -15,7 +16,11 @@ const getAppBarStyles = (isUserAuthenticated) => ({
   }
 })
 
-export default function Navbar({ isUserAuthenticated, handleDrawerToggle, handleSearch = () => null }) {
+export default function Navbar(props) {
+  const {
+    isUserAuthenticated, handleDrawerToggle,
+    handleSearch = () => null, handleCreateSlide = () => null,
+  } = props
   const { pathname } = useLocation()
 
   return (
@@ -51,7 +56,11 @@ export default function Navbar({ isUserAuthenticated, handleDrawerToggle, handle
         </Typography>
 
         {pathname === '/slides' && (
-          <Search handleSearch={handleSearch} />
+          <Box display="flex" alignItems="center" flexGrow={1} flexShrink={0}>
+            <Search handleSearch={handleSearch} />
+
+            <CreateSlide handleCreateSlide={handleCreateSlide} />
+          </Box>
         )}
       </Toolbar>
     </AppBar>

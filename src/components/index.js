@@ -1,3 +1,4 @@
+export { default as CreateSlide } from './CreateSlide'
 export { default as FilterAccordion } from './FilterAccordion'
 export { default as FilterList } from './FilterList'
 export { default as FilterSelect } from './FilterSelect'
