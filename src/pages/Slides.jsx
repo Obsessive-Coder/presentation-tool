@@ -8,7 +8,7 @@ import {
 
 // Styles, utils, and other helpers.
 import { sort } from 'fast-sort'
-import { DELETE_FILE } from '../utils/firebase/storage'
+import { DELETE_FILE, UPLOAD_FILE } from '../utils/firebase/storage'
 import {
   CREATE_FIRESTORE_DATA, DELETE_FIRESTORE_DATA, READ_FIRESTORE_DATA,
 } from '../utils/firebase/firestore'
@@ -87,7 +87,7 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
         setAlertData({
           isOpen: true,
           severity: 'error',
-          message: `Error saving new presentation. Please try again later.\n${JSON.stringify(error)}`
+          message: `Error finding slide. Please try again later.\n${JSON.stringify(error)}`
         })
       })
   }
@@ -215,30 +215,6 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
   }
 
   const handleDeleteSlide = (slideId) => {
-
-    // application "Dairy"
-    // endProduct "Yogurt"
-    // fileName "MILN_12429_New Products Finished Goods Presentation-8-11 full_Part10.jpeg"
-    // id "b8b824aa-ccfc-424e-ae09-314f55489976"
-    // manufacturer "Chobani"
-    // name "Chobani Yogurt Flip Cups"
-    // organicity "Inorganic"
-    // productsAndForms "Strawberry,Mango:Fragment,Fragment"
-    // slide 10
-
-    // mdProducts
-    //  0
-    //    form "Fragment"
-    //    product "Strawberry"
-    //  1
-    //    form "Fragment"
-    //    product "Mango"
-
-    // types
-    //  0 "Fruit" 
-
-
-
     const isDeleteConfirmed = window
       .confirm(`Are you sure you want to delete this slide? Any presentation that use this slide will be broken.`)
 
@@ -269,10 +245,46 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
           setAlertData({
             isOpen: true,
             severity: 'error',
-            message: `Error saving new presentation. Please try again later.\n${JSON.stringify(error)}`
+            message: `Error deleting slide. Please try again later.\n${JSON.stringify(error)}`
           })
         })
     }
+  }
+
+  const handleCreateSlide = (slideData, slideFile) => {
+    UPLOAD_FILE(slideFile)
+      .then((x) => {
+        return CREATE_FIRESTORE_DATA('slides', slideData)
+      })
+      .then(() => {
+        setAlertData({
+          isOpen: true,
+          severity: 'success',
+          message: 'Successfully created the slide and related file.'
+        })
+
+        const updatedSlides = [...slides]
+        updatedSlides.push(slideData)
+        setSlides(updatedSlides)
+
+        const { currentPageNumber, pageSize } = pageData
+        const startIndex = (currentPageNumber - 1) * pageSize
+        const endIndex = currentPageNumber * pageSize
+        const pageSlides = updatedSlides.slice(startIndex, endIndex)
+
+        setPageData({
+          ...pageData,
+          pageSlides,
+        })
+
+      })
+      .catch(error => {
+        setAlertData({
+          isOpen: true,
+          severity: 'error',
+          message: `Error saving new slide. Please try again later.\n${JSON.stringify(error)}`
+        })
+      })
   }
 
   const handleSavePresentation = async (presentationName) => {
@@ -365,6 +377,7 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
         isUserAuthenticated={isUserAuthenticated}
         handleDrawerToggle={handleDrawerToggle}
         handleSearch={handleSearch}
+        handleCreateSlide={handleCreateSlide}
       />
 
       <Box>
