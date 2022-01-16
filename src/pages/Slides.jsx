@@ -8,7 +8,9 @@ import {
 
 // Styles, utils, and other helpers.
 import { sort } from 'fast-sort'
-import { CREATE_FIRESTORE_DATA, READ_FIRESTORE_DATA } from '../utils/firebase/firestore'
+import {
+  CREATE_FIRESTORE_DATA, DELETE_FIRESTORE_DATA, READ_FIRESTORE_DATA,
+} from '../utils/firebase/firestore'
 
 const defaultPageData = {
   currentPageNumber: 1,
@@ -211,6 +213,40 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
     }
   }
 
+  const handleDeleteSlide = (slideId) => {
+    const isDeleteConfirmed = window
+      .confirm(`Are you sure you want to delete this slide?`)
+
+    if (isDeleteConfirmed) {
+      DELETE_FIRESTORE_DATA('slides', slideId)
+        .then(() => {
+          const updatedSlides = slides.filter(({ id }) => id !== slideId)
+          setSlides(updatedSlides)
+
+          const { pageSize } = pageData
+          const pageSlides = updatedSlides.slice(0, pageSize)
+
+          setPageData({
+            ...pageData,
+            pageSlides
+          })
+
+          setAlertData({
+            isOpen: true,
+            severity: 'success',
+            message: 'Successfully deleted the slide.'
+          })
+        })
+        .catch(error => {
+          setAlertData({
+            isOpen: true,
+            severity: 'error',
+            message: `Error saving new presentation. Please try again later.\n${JSON.stringify(error)}`
+          })
+        })
+    }
+  }
+
   const handleSavePresentation = async (presentationName) => {
     // Check if the name is unique.
     const snapshot = await READ_FIRESTORE_DATA('presentations', 'name', presentationName)
@@ -327,6 +363,7 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
                   slideData={slide}
                   isSelected={presentationSlides.filter(({ name }) => name === slide.name).length > 0}
                   handleAddRemoveSlide={handleAddRemoveSlide}
+                  handleDeleteSlide={handleDeleteSlide}
                 />
               </Grid>
             ))}

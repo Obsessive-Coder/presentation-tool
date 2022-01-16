@@ -1,7 +1,9 @@
 // Components.
 import {
-  Box, Button, Card, CardActions, CardActionArea, CardContent, CardMedia, Tooltip, Typography,
+  Box, Button, Card, CardActions, CardActionArea, CardContent, CardMedia, IconButton,
+  Tooltip, Typography,
 } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 // Styles, utils, and other helpers.
 import { makeStyles } from '@mui/styles'
@@ -40,8 +42,9 @@ const useStyles = makeStyles({
   }
 })
 
-export default function SlideCard({ slideData, isSelected, handleAddRemoveSlide }) {
+export default function SlideCard(props) {
   const classes = useStyles()
+  const { slideData, isSelected, handleAddRemoveSlide, handleDeleteSlide } = props
   const {
     id, fileName, name, application, endProduct, organicity, manufacturer, mdProducts, types,
   } = slideData
@@ -122,15 +125,19 @@ export default function SlideCard({ slideData, isSelected, handleAddRemoveSlide 
         </Tooltip>
       </CardContent>
 
-      <CardActions sx={{ p: 0 }}>
+      <CardActions sx={{ py: 0, px: 2, display: 'flex', justifyContent: 'space-between' }}>
         <Button
           value={name}
           color="primary"
-          sx={{ margin: 'auto', fontWeight: 'bold', fontSize: 'large' }}
+          sx={{ fontWeight: 'bold', fontSize: 'large' }}
           onClick={handleAddRemoveSlide}
         >
           {isSelected ? 'Remove' : 'Add'}
         </Button>
+
+        <IconButton color="error" aria-label="delete" onClick={() => handleDeleteSlide(fileName)}>
+          <DeleteIcon />
+        </IconButton>
       </CardActions>
     </Card>
   )
