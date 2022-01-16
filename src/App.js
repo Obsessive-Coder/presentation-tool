@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import { Box } from '@mui/material'
 import { Authentication, Help, Home, Presentations, Slides } from './pages'
-import { Navbar, NavDrawer } from './components'
+import { NavDrawer } from './components'
 
 // Styles, utils, and other helpers.
 import { onAuthStateChanged, signOut } from 'firebase/auth'
