@@ -6,6 +6,7 @@ import {
   Box, Card, CardActionArea, CardContent, List, ListItem, ListItemIcon, ListItemText, Typography,
 } from "@mui/material"
 import StarIcon from '@mui/icons-material/Star'
+import { Navbar } from '../components'
 
 const items = [{
   label: 'Presentations',
@@ -20,11 +21,13 @@ const items = [{
   // },
 ]
 
-export default function Home() {
+export default function Home({ isUserAuthenticated, handleDrawerToggle }) {
   const navigate = useNavigate()
 
   return (
     <main>
+      <Navbar isUserAuthenticated={isUserAuthenticated} handleDrawerToggle={handleDrawerToggle} />
+
       <Typography variant="h2" textAlign="center" color="primary">
         Microdried Presentation Tool
       </Typography>
@@ -33,6 +36,7 @@ export default function Home() {
 
         {items.map(({ label, bullets }) => (
           <Card
+            key={`home-card-${label}`}
             raised
             sx={{ flex: 1, mx: 8, width: 350, border: 'thin solid #542989' }}
           >

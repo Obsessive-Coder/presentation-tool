@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 // Components.
 import {
-  ButtonGroup, Divider, FormControl, IconButton, InputBase, InputLabel, MenuItem, Paper, Select, ToggleButton,
+  ButtonGroup, Divider, FormControl, InputLabel, MenuItem, Paper, Select, ToggleButton,
 } from '@mui/material'
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
 

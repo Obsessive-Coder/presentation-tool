@@ -1,9 +1,13 @@
 import React from 'react'
 
-export default function Help() {
+// Components.
+import { Navbar } from '../components'
+
+export default function Help({ isUserAuthenticated, handleDrawerToggle }) {
   return (
-    <div>
+    <main>
+      <Navbar isUserAuthenticated={isUserAuthenticated} handleDrawerToggle={handleDrawerToggle} />
       Help Page
-    </div>
+    </main>
   )
 }

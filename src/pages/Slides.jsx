@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 
 // Components.
 import { Alert, AlertTitle, Box, Grid, Pagination, Snackbar, Stack } from '@mui/material'
-import { FilterAccordion, PresentationPreview, SlideCard, SortDropdown } from '../components'
+import {
+  FilterAccordion, Navbar, PresentationPreview, SlideCard, SortDropdown,
+} from '../components'
 
 // Styles, utils, and other helpers.
 import { sort } from 'fast-sort'
@@ -15,7 +17,7 @@ const defaultPageData = {
   pageSlides: [],
 }
 
-export default function Slides() {
+export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
   const [isLoading, setIsLoading] = useState(true)
   const [alertData, setAlertData] = useState({})
   const [slides, setSlides] = useState(null)
@@ -41,6 +43,50 @@ export default function Slides() {
       pageSlides,
       currentPageNumber: pageNumber
     })
+  }
+
+  const handleSearch = (event) => {
+    event.preventDefault()
+
+    const { value } = event.target.searchTerm
+
+    if (!value) {
+      const { currentPageNumber, pageSize } = pageData
+      const startIndex = (currentPageNumber - 1) * pageSize
+      const endIndex = currentPageNumber * pageSize
+      const pageSlides = slides.slice(startIndex, endIndex)
+
+      return setPageData({
+        ...pageData,
+        pageSlides,
+      })
+    }
+
+    READ_FIRESTORE_DATA('slides', 'name', value)
+      .then(snapshot => {
+        const docs = []
+        snapshot.forEach(doc => docs.push({
+          id: doc.id,
+          ...doc.data(),
+        }))
+
+        const { currentPageNumber, pageSize } = pageData
+        const startIndex = (currentPageNumber - 1) * pageSize
+        const endIndex = currentPageNumber * pageSize
+        const pageSlides = docs.slice(startIndex, endIndex)
+
+        setPageData({
+          ...pageData,
+          pageSlides,
+        })
+      })
+      .catch(error => {
+        setAlertData({
+          isOpen: true,
+          severity: 'error',
+          message: `Error saving new presentation. Please try again later.\n${JSON.stringify(error)}`
+        })
+      })
   }
 
   const handleSort = (sortData) => {
@@ -171,8 +217,16 @@ export default function Slides() {
 
   const { currentPageNumber, pageCount, pageSlides } = pageData
 
+  console.log(pageSlides)
+
   return (
     <main>
+      <Navbar
+        isUserAuthenticated={isUserAuthenticated}
+        handleDrawerToggle={handleDrawerToggle}
+        handleSearch={handleSearch}
+      />
+
       <Box>
         <Box display="flex" alignItems="flex-start" mb={2}>
           <Box flex={1}>
@@ -188,8 +242,8 @@ export default function Slides() {
           </Box>
         </Box>
 
-        <Box>
-          <Grid container spacing={5}>
+        <Box key={pageSlides.length}>
+          <Grid container key={currentPageNumber} spacing={5}>
             {pageSlides.map((slide, index) => (
               <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={`slide-${slide.name}-${index}`}>
                 <SlideCard

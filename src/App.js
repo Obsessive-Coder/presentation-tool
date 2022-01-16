@@ -10,6 +10,20 @@ import { Navbar, NavDrawer } from './components'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { FIREBASE_AUTH } from './utils/firebase/admin'
 
+const routes = [{
+  path: '/',
+  Component: Home,
+}, {
+  path: '/presentations',
+  Component: Presentations,
+}, {
+  path: '/slides',
+  Component: Slides,
+}, {
+  path: '/help',
+  Component: Help,
+}]
+
 function App() {
   const navigate = useNavigate()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
@@ -32,9 +46,6 @@ function App() {
 
   return (
     <div>
-      <Navbar isUserAuthenticated={isUserAuthenticated} handleDrawerToggle={handleDrawerToggle}>
-      </Navbar>
-
       <Box display="flex">
         {isUserAuthenticated && (
           <NavDrawer
@@ -48,14 +59,32 @@ function App() {
           <Routes>
             {isUserAuthenticated ? (
               <>
-                <Route exact path="/" element={<Home />} />
+                {routes.map(({ path, Component }) => (
+                  <Route
+                    exact
+                    key={`page-route-${path}`}
+                    path={path}
+                    element={(
+                      <Component isUserAuthenticated={isUserAuthenticated} handleDrawerToggle={handleDrawerToggle} />
+                    )}
+                  />
+                ))}
+                {/* <Route exact path="/" element={<Home />} />
                 <Route exact path="/presentations" element={<Presentations />} />
-                <Route exact path="/slides" element={<Slides />} />
-                <Route exact path="/help" element={<Help />} />
+                <Route exact path="/slides" element={<Slides isUserAuthenticated={isUserAuthenticated} handleDrawerToggle={handleDrawerToggle} />} />
+                <Route exact path="/help" element={<Help />} /> */}
               </>
             ) : (
               <>
-                <Route path="/*" element={<Authentication />} />
+                <Route
+                  path="/*"
+                  element={(
+                    <Authentication
+                      isUserAuthenticated={isUserAuthenticated}
+                      handleDrawerToggle={handleDrawerToggle}
+                    />
+                  )}
+                />
               </>
             )}
 

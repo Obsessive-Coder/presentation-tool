@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react'
 // Components.
 import { Link } from 'react-router-dom'
 import { Alert, AlertTitle, Box, Snackbar, Typography } from '@mui/material'
-import { PresentationsTable, PresentationView } from '../components'
+import { Navbar, PresentationsTable, PresentationView } from '../components'
 
 // Styles, utils, and other helpers.
 import { DELETE_FIRESTORE_DATA, READ_FIRESTORE_DATA } from '../utils/firebase/firestore'
 
-export default function Presentations() {
+export default function Presentations({ isUserAuthenticated, handleDrawerToggle }) {
   const [isLoading, setIsLoading] = useState(true)
   const [alertData, setAlertData] = useState({})
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false)
@@ -88,6 +88,8 @@ export default function Presentations() {
 
   return (
     <main>
+      <Navbar isUserAuthenticated={isUserAuthenticated} handleDrawerToggle={handleDrawerToggle} />
+
       {isViewDialogOpen && (
         <PresentationView
           isOpen={isViewDialogOpen}

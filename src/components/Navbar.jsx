@@ -3,6 +3,7 @@
 // Components.
 import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import Search from './Search'
 
 // Styles, utils, and other helpers.
 import { useLocation } from 'react-router-dom'
@@ -14,7 +15,7 @@ const getAppBarStyles = (isUserAuthenticated) => ({
   }
 })
 
-export default function Navbar({ handleDrawerToggle, isUserAuthenticated, children }) {
+export default function Navbar({ isUserAuthenticated, handleDrawerToggle, handleSearch = () => null }) {
   const { pathname } = useLocation()
 
   return (
@@ -49,7 +50,9 @@ export default function Navbar({ handleDrawerToggle, isUserAuthenticated, childr
           {pathname === '/' ? 'Welcome' : pathname.replace('/', '')}
         </Typography>
 
-        {children}
+        {pathname === '/slides' && (
+          <Search handleSearch={handleSearch} />
+        )}
       </Toolbar>
     </AppBar>
   )
