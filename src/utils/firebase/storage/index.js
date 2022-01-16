@@ -1,0 +1,1 @@
+export { default as DELETE_FILE } from './deleteFile'

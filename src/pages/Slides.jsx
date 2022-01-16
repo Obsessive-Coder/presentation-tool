@@ -8,6 +8,7 @@ import {
 
 // Styles, utils, and other helpers.
 import { sort } from 'fast-sort'
+import { DELETE_FILE } from '../utils/firebase/storage'
 import {
   CREATE_FIRESTORE_DATA, DELETE_FIRESTORE_DATA, READ_FIRESTORE_DATA,
 } from '../utils/firebase/firestore'
@@ -214,8 +215,32 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
   }
 
   const handleDeleteSlide = (slideId) => {
+
+    // application "Dairy"
+    // endProduct "Yogurt"
+    // fileName "MILN_12429_New Products Finished Goods Presentation-8-11 full_Part10.jpeg"
+    // id "b8b824aa-ccfc-424e-ae09-314f55489976"
+    // manufacturer "Chobani"
+    // name "Chobani Yogurt Flip Cups"
+    // organicity "Inorganic"
+    // productsAndForms "Strawberry,Mango:Fragment,Fragment"
+    // slide 10
+
+    // mdProducts
+    //  0
+    //    form "Fragment"
+    //    product "Strawberry"
+    //  1
+    //    form "Fragment"
+    //    product "Mango"
+
+    // types
+    //  0 "Fruit" 
+
+
+
     const isDeleteConfirmed = window
-      .confirm(`Are you sure you want to delete this slide?`)
+      .confirm(`Are you sure you want to delete this slide? Any presentation that use this slide will be broken.`)
 
     if (isDeleteConfirmed) {
       DELETE_FIRESTORE_DATA('slides', slideId)
@@ -231,11 +256,14 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
             pageSlides
           })
 
-          setAlertData({
-            isOpen: true,
-            severity: 'success',
-            message: 'Successfully deleted the slide.'
-          })
+          DELETE_FILE(slideId)
+            .then(() => {
+              setAlertData({
+                isOpen: true,
+                severity: 'success',
+                message: 'Successfully deleted the slide and related files.'
+              })
+            })
         })
         .catch(error => {
           setAlertData({
