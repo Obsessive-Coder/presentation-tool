@@ -75,7 +75,7 @@ export default function FilterAccordion({ setAlertData, handleFilter, handleSort
           })
       }
     })()
-  }, [])
+  }, [setAlertData])
 
   const mergedSelectedFilters = [].concat.apply([], Object.values(selectedFilters))
 

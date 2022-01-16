@@ -1,5 +1,5 @@
 // Components.
-import { Box, Chip, ListItem, Paper } from '@mui/material'
+import { Chip, ListItem, Paper } from '@mui/material'
 
 export default function FilterList(props) {
   const { selectedFilters, handleAddRemoveFilter } = props

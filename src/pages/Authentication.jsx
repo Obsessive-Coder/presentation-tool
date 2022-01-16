@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 // Components.
 import { Box, Button, TextField } from '@mui/material'
+import { Navbar } from '../components'
 
 // Styles, utils, and other helpers.
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
@@ -9,7 +10,7 @@ import { FIREBASE_AUTH } from '../utils/firebase/admin'
 
 const defaultFormData = { email: '', password: '' }
 
-export default function Authentication() {
+export default function Authentication({ isUserAuthenticated, handleDrawerToggle }) {
   const [formData, setFormData] = useState({ ...defaultFormData })
   const [authView, setAuthView] = useState('login')
   const isLoginView = authView === 'login'
@@ -37,47 +38,51 @@ export default function Authentication() {
   }
 
   return (
-    <Box
-      component="form"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      onSubmit={handleSubmitCredentials}
-      sx={{ textAlign: 'center', width: '25%', margin: 'auto', pb: '2rem', px: '2rem', border: 'thin solid #542989', borderRadius: 3 }}
-    >
-      <h2 style={{ textTransform: 'capitalize', color: '#542989' }}>{authView}</h2>
+    <main>
+      <Navbar isUserAuthenticated={isUserAuthenticated} handleDrawerToggle={handleDrawerToggle} />
 
-      <TextField
-        required
-        label="Email"
-        placeholder="example@email.com"
-        onChange={(event) => handleInputOnChange(event, 'email')}
-        sx={{ my: '1rem' }}
-      />
+      <Box
+        component="form"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        onSubmit={handleSubmitCredentials}
+        sx={{ textAlign: 'center', width: '25%', margin: 'auto', pb: '2rem', px: '2rem', border: 'thin solid #542989', borderRadius: 3 }}
+      >
+        <h2 style={{ textTransform: 'capitalize', color: '#542989' }}>{authView}</h2>
 
-      <TextField
-        required
-        type="password"
-        label="Password"
-        helperText="Must be at least 6 characters long"
-        FormHelperTextProps={{ style: { fontWeight: 'bold' } }}
-        onChange={(event) => handleInputOnChange(event, 'password')}
-        sx={{ my: '1rem' }}
-      />
+        <TextField
+          required
+          label="Email"
+          placeholder="example@email.com"
+          onChange={(event) => handleInputOnChange(event, 'email')}
+          sx={{ my: '1rem' }}
+        />
 
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Button type="button" color="info" onClick={() => setAuthView(isLoginView ? 'register' : 'login')}>
-          {isLoginView ? 'Sign up if you don\'t have an account' : 'Login if you already have an account'}
-        </Button>
+        <TextField
+          required
+          type="password"
+          label="Password"
+          helperText="Must be at least 6 characters long"
+          FormHelperTextProps={{ style: { fontWeight: 'bold' } }}
+          onChange={(event) => handleInputOnChange(event, 'password')}
+          sx={{ my: '1rem' }}
+        />
 
-        <Button
-          type="submit"
-          variant="contained"
-          style={{ textTransform: 'capitalize' }}
-        >
-          {authView}
-        </Button>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Button type="button" color="info" onClick={() => setAuthView(isLoginView ? 'register' : 'login')}>
+            {isLoginView ? 'Sign up if you don\'t have an account' : 'Login if you already have an account'}
+          </Button>
+
+          <Button
+            type="submit"
+            variant="contained"
+            style={{ textTransform: 'capitalize' }}
+          >
+            {authView}
+          </Button>
+        </Box>
       </Box>
-    </Box>
+    </main>
   )
 }

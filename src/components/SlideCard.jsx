@@ -1,6 +1,6 @@
 // Components.
 import {
-  Button, Box, Card, CardActions, CardActionArea, CardContent, CardMedia, Tooltip, Typography,
+  Button, Card, CardActions, CardActionArea, CardContent, CardMedia, Tooltip, Typography,
 } from '@mui/material'
 
 // Styles, utils, and other helpers.
