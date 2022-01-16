@@ -109,8 +109,86 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
 
   const handleFilter = (filters) => {
     // TODO: Special filters for types and form and md products.
+    const mergedFilters = [].concat.apply([], Object.values(filters))
+    if (mergedFilters.length === 0) {
+      const { pageSize } = pageData
+      const pageSlides = slides.slice(0, pageSize)
 
+      return setPageData({
+        ...pageData,
+        pageSlides,
+        currentPageNumber: 1,
+        pageCount: Math.ceil(slides.length / pageSize),
+      })
+    }
 
+    const filteredSlides = []
+
+    for (let i = 0; i < slides.length; i++) {
+      const slide = slides[i]
+      const filterKeys = Object.keys(filters)
+
+      for (let j = 0; j < filterKeys.length; j++) {
+        const key = filterKeys[j];
+        const categoryFilters = filters[key]
+
+        if (categoryFilters.length > 0) {
+          let isTypesInSlide = false
+          let isFormInSlide = false
+          let isProductInSlide = false
+          let isOtherFilterInSlide = filters[key].includes(slide[key])
+
+          // Filter for types (fruit and/or vegetable).
+          if (key === 'types') {
+            for (let k = 0; k < slide.types.length; k++) {
+              const type = slide.types[k]
+              if (categoryFilters.includes(type)) {
+                isTypesInSlide = true
+                break
+              }
+            }
+          }
+
+          // Filter for forms and md products.
+          if (key === 'form' || key === 'mdProducts') {
+            for (let l = 0; l < slide.mdProducts.length; l++) {
+              const slideKey = key === 'mdProducts' ? 'product' : key
+              const product = slide.mdProducts[l]
+              const property = product[slideKey]
+
+              if (categoryFilters.includes(property)) {
+                if (key === 'form') {
+                  isFormInSlide = true
+                } else {
+                  isProductInSlide = true
+                }
+                break
+              }
+            }
+          }
+
+          // If the slide includes any of the filter items then included it in the result.
+          if (isTypesInSlide || isFormInSlide || isProductInSlide || isOtherFilterInSlide) {
+            const isInFilteredSlides = filteredSlides
+              .filter(({ id }) => id === slide.id).length > 0
+
+            if (!isInFilteredSlides) {
+              filteredSlides.push(slide)
+            }
+          }
+        }
+      }
+    }
+
+    const { pageSize } = pageData
+    const pageSlides = filteredSlides.slice(0, pageSize)
+
+    setPageData({
+      ...pageData,
+      pageSlides,
+      currentPageNumber: 1,
+      pageCount: Math.ceil(filteredSlides.length / pageSize),
+    })
   }
 
   const handleAddRemoveSlide = (event) => {
@@ -216,8 +294,6 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
   }
 
   const { currentPageNumber, pageCount, pageSlides } = pageData
-
-  console.log(pageSlides)
 
   return (
     <main>
