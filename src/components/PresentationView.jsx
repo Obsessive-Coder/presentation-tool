@@ -130,7 +130,12 @@ export default function PresentationView(props) {
         </AppBar>
       )}
 
-      <Box display="flex" flexDirection="column" height="100%">
+      <Box
+        display="flex"
+        flexDirection="column"
+        height="100%"
+        style={{ padding: '0 20px', overflow: 'hidden' }}
+      >
         <Box flexGrow={1}>
           {isMobile || isFullscreen ? (
             <Backdrop

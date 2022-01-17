@@ -85,16 +85,16 @@ export default function SlideCarousel(props) {
       onPrevStart={handlePrevStart}
       style={{ padding: '0.5rem' }}
     >
-      {items.map(({ fileName, name }, index) => (
+      {items.map(({ fileName, name = '' }, index) => (
         <Card
-          key={`slide-preview-${name}`}
+          key={`slide-preview-${name}-${fileName}`}
           className={classes.previewCard}
           style={{
             border: (isActiveHighlighted && index === activeIndex) ? 'thick solid #6c9730' : '',
             boxShadow: (isActiveHighlighted && index === activeIndex) ? '0 0 10px #6c9730 ' : '',
           }}
         >
-          {isRemoveVisible && (
+          {isRemoveVisible && name && (
             <Button
               aria-label="delete"
               value={name}

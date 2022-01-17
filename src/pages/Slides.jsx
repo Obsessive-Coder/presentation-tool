@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 
 // Components.
-import { Alert, AlertTitle, Box, Grid, Pagination, Snackbar, Stack } from '@mui/material'
+import {
+  Alert, AlertTitle, Box, Grid, Pagination, Snackbar, Stack, Typography,
+} from '@mui/material'
 import {
   FilterAccordion, Navbar, PresentationPreview, SlideCard, SortDropdown,
 } from '../components'
@@ -24,6 +26,7 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
   const [isLoading, setIsLoading] = useState(true)
   const [alertData, setAlertData] = useState({})
   const [slides, setSlides] = useState(null)
+  const [openingSlides, setOpeningSlides] = useState([])
   const [presentationSlides, setPresentationSlides] = useState([])
   const [pageData, setPageData] = useState({ ...defaultPageData })
 
@@ -97,7 +100,15 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
 
     const { field, isAscending } = sortData
     const sortType = isAscending ? 'asc' : 'desc'
-    const sortedSlides = sort(slides)[sortType]((slide) => slide[field])
+
+    const sortedSlides = sort(slides)[sortType]((slide) => {
+      if (field === 'mdProducts') {
+        return slide[field][0].product
+      }
+
+      return slide[field]
+    })
+
     setSlides(sortedSlides)
 
     const { pageSize } = pageData
@@ -153,9 +164,9 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
           }
 
           // Filter for forms and md products.
-          if (key === 'form' || key === 'mdProducts') {
+          if (key === 'form' || key === 'mdProduct') {
             for (let l = 0; l < slide.mdProducts.length; l++) {
-              const slideKey = key === 'mdProducts' ? 'product' : key
+              const slideKey = key === 'mdProduct' ? 'product' : key
               const product = slide.mdProducts[l]
               const property = product[slideKey]
 
@@ -207,10 +218,24 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
     if (tempPresentationSlides.length === presentationSlides.length) {
       // Add slide data to the presentation slides.
       const slideData = slides.filter(({ name }) => name === productName)[0]
-      setPresentationSlides((previousSlides) => [...previousSlides, slideData])
+
+      setPresentationSlides((previousSlides) => {
+        let updatedSlides = []
+        if (previousSlides.length === 0) {
+          updatedSlides = [...openingSlides]
+        }
+        return [...updatedSlides, ...previousSlides, slideData]
+      })
     } else {
       // Remove the slide from the presentation slides.
-      setPresentationSlides(tempPresentationSlides)
+      setPresentationSlides((previousSlides) => {
+        const actualSlides = tempPresentationSlides.filter(({ name }) => name)
+        let updatedSlides = [...tempPresentationSlides]
+        if (actualSlides.length === 0) {
+          updatedSlides = []
+        }
+        return [...updatedSlides]
+      })
     }
   }
 
@@ -355,6 +380,17 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
           pageCount,
           pageSlides
         })
+
+        READ_FIRESTORE_DATA('openingSlides')
+          .then(snapshot => {
+            const docs = []
+            snapshot.forEach(doc => docs.push({
+              id: doc.id,
+              ...doc.data(),
+            }))
+
+            setOpeningSlides(docs)
+          })
       })
       .catch(error => {
         setAlertData({
@@ -386,7 +422,6 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
             <FilterAccordion
               setAlertData={setAlertData}
               handleFilter={handleFilter}
-              handleSort={handleSort}
             />
           </Box>
 
@@ -396,19 +431,25 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
         </Box>
 
         <Box key={pageSlides.length}>
-          <Grid container key={currentPageNumber} spacing={5}>
-            {pageSlides.map((slide, index) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={`slide-${slide.name}-${index}`}>
-                <SlideCard
-                  key={currentPageNumber}
-                  slideData={slide}
-                  isSelected={presentationSlides.filter(({ name }) => name === slide.name).length > 0}
-                  handleAddRemoveSlide={handleAddRemoveSlide}
-                  handleDeleteSlide={handleDeleteSlide}
-                />
-              </Grid>
-            ))}
-          </Grid>
+          {pageSlides.length > 0 ? (
+            <Grid container key={currentPageNumber} spacing={5}>
+              {pageSlides.map((slide, index) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={`slide-${slide.name}-${index}`}>
+                  <SlideCard
+                    key={currentPageNumber}
+                    slideData={slide}
+                    isSelected={presentationSlides.filter(({ name }) => name === slide.name).length > 0}
+                    handleAddRemoveSlide={handleAddRemoveSlide}
+                    handleDeleteSlide={handleDeleteSlide}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Box textAlign="center">
+              <Typography variant="h2">No Slides</Typography>
+            </Box>
+          )}
         </Box>
 
         {presentationSlides.length > 0 && (

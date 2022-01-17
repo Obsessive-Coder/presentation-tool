@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 // Components.
 import {
@@ -10,11 +10,11 @@ import FilterSelect from './FilterSelect'
 
 // Styles, utils, and other helpers.
 import { sort } from 'fast-sort'
-import { READ_FIRESTORE_DATA } from '../utils/firebase/firestore'
+import { FILTER_FIELDS } from '../utils/constants'
 
-const getDefaultSelectedFilters = (filterFields = []) => {
+const getDefaultSelectedFilters = () => {
   return (
-    Object.keys(filterFields)
+    Object.keys(FILTER_FIELDS)
       .reduce((accumulator, currentValue) => ({
         ...accumulator,
         [currentValue]: []
@@ -23,14 +23,12 @@ const getDefaultSelectedFilters = (filterFields = []) => {
   )
 }
 
-
-export default function FilterAccordion({ setAlertData, handleFilter, handleSort }) {
-  const [filterFields, setFilterFields] = useState({})
-  const [selectedFilters, setSelectedFilters] = useState({})
+export default function FilterAccordion({ handleFilter }) {
+  const [selectedFilters, setSelectedFilters] = useState(getDefaultSelectedFilters())
 
   const handleAddRemoveFilter = ({ category, filter }) => {
     if (category === 'all' && filter === 'all') {
-      const defaultSelectedFilters = getDefaultSelectedFilters(filterFields)
+      const defaultSelectedFilters = getDefaultSelectedFilters()
       return setSelectedFilters(defaultSelectedFilters)
     }
 
@@ -53,30 +51,7 @@ export default function FilterAccordion({ setAlertData, handleFilter, handleSort
     handleFilter(updatedSFilters)
   }
 
-  const filterCategories = Object.keys(filterFields).sort()
-
-  useEffect(() => {
-    (() => {
-      if (setAlertData) {
-        READ_FIRESTORE_DATA('constants')
-          .then((snapshot) => {
-            // Store filter fields data in state.
-            let filterFields = {}
-            snapshot.forEach((doc) => filterFields = doc.data())
-            setFilterFields(filterFields)
-            setSelectedFilters(getDefaultSelectedFilters(filterFields))
-          })
-          .catch(error => {
-            setAlertData({
-              isOpen: true,
-              severity: 'error',
-              message: `Error retrieving data from the database. Please try again later.\n${JSON.stringify(error)}`
-            })
-          })
-      }
-    })()
-  }, [setAlertData])
-
+  const filterCategories = Object.keys(FILTER_FIELDS).sort()
   const mergedSelectedFilters = [].concat.apply([], Object.values(selectedFilters))
 
   return (
@@ -123,7 +98,7 @@ export default function FilterAccordion({ setAlertData, handleFilter, handleSort
             <FilterSelect
               key={`filter-select-${category}`}
               category={category}
-              choices={sort(filterFields[category]).asc()}
+              choices={sort(FILTER_FIELDS[category]).asc()}
               selectedChoices={selectedFilters[category] ?? []}
               handleAddRemoveFilter={handleAddRemoveFilter}
             />

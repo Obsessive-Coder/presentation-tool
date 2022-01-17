@@ -110,14 +110,16 @@ export default function SlideCard(props) {
         </Box>
       </CardActionArea>
 
-      <CardContent xs={{ textAlign: 'center', padding: 1 }}>
+      <CardContent style={{ textAlign: 'center', padding: 8 }}>
         <Tooltip arrow title={name} placement="top" enterTouchDelay={100}>
           <Typography
-            variant="h6"
+            variant="subtitle1"
             component="div"
             color="primary"
-            mx={2}
+            mx="2px"
             my={0}
+            p={0}
+            textAlign="center"
             className={classes.textTruncate}
           >
             {name}
@@ -135,7 +137,7 @@ export default function SlideCard(props) {
           {isSelected ? 'Remove' : 'Add'}
         </Button>
 
-        <IconButton color="error" aria-label="delete" onClick={() => handleDeleteSlide(fileName)}>
+        <IconButton color="error" aria-label="delete" onClick={() => handleDeleteSlide(id)}>
           <DeleteIcon />
         </IconButton>
       </CardActions>

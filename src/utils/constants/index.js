@@ -1,3 +1,5 @@
+export * as FILTER_FIELDS from './filterFields'
+export * as OPENING_SLIDES from './openingSlides'
 export * as NAV_DRAWER_CONSTANTS from './navDrawer'
 export * as PRODUCTS_AND_FORMS from './products'
 export * as SEARCH_CONSTANTS from './search'

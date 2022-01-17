@@ -75,7 +75,7 @@ export default function CreateSlide({ handleCreateSlide }) {
   }
 
   const handleTypesOnChange = (event, isChecked) => {
-    const { name, value } = event.target
+    const { name } = event.target
     const { types } = formData
 
     let updatedTypes = [...types]
