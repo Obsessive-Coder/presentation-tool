@@ -334,7 +334,10 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
     // Add the new presentation to the db.
     const presentation = {
       name: presentationName,
-      slides: presentationSlides.map(({ name, fileName }) => ({ name, fileName }))
+      slides: presentationSlides.map(({ name, fileName }) => ({
+        name: name ?? null,
+        fileName: fileName ?? null
+      }))
     }
 
     CREATE_FIRESTORE_DATA('presentations', presentation)

@@ -93,6 +93,7 @@ export default function Presentations({ isUserAuthenticated, handleDrawerToggle 
       {isViewDialogOpen && (
         <PresentationView
           isOpen={isViewDialogOpen}
+          isPresentationsPage={true}
           isSaveShown={false}
           carouselItems={selectedPresentation?.slides ?? []}
           handleClose={handleCloseViewDialog}

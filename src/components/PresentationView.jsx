@@ -16,7 +16,8 @@ export default function PresentationView(props) {
   const [slideIndex, setSlideIndex] = useState(0)
 
   const {
-    isOpen, isSaveShown, carouselItems, handleClose, handleOpenNameDialog, handleAddRemoveSlide,
+    isOpen, isPresentationsPage = false, isSaveShown, carouselItems, handleClose,
+    handleOpenNameDialog, handleAddRemoveSlide,
   } = props
 
   const getIsFullscreen = () => {
@@ -177,7 +178,7 @@ export default function PresentationView(props) {
             <SlideCarousel
               items={carouselItems}
               allowMultipleSlides={true}
-              isRemoveVisible={true}
+              isRemoveVisible={!isPresentationsPage}
               isFullscreen={!isMobile && isFullscreen}
               isPreview={false}
               activeIndex={slideIndex}

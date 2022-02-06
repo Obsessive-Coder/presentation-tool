@@ -71,7 +71,7 @@ export default function Authentication({ isUserAuthenticated, handleDrawerToggle
 
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Button type="button" color="info" onClick={() => setAuthView(isLoginView ? 'register' : 'login')}>
-            {isLoginView ? 'Sign up if you don\'t have an account' : 'Login if you already have an account'}
+            {isLoginView ? 'Register for a new account' : 'Login to an existing account'}
           </Button>
 
           <Button

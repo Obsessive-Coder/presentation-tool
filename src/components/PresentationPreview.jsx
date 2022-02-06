@@ -110,6 +110,7 @@ export default function PresentationPreview(props) {
 
       <PresentationView
         isOpen={isViewDialogOpen}
+        isPresentationsPage={false}
         isSaveShown={true}
         carouselItems={carouselItems}
         handleClose={handleCloseViewDialog}
