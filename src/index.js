@@ -27,7 +27,7 @@ const theme = createTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter basename="/live-presentation-tool">
+    <BrowserRouter>
       <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>
