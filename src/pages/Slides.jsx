@@ -239,9 +239,9 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
     }
   }
 
-  const handleDeleteSlide = (slideId) => {
+  const handleDeleteSlide = (slideId, fileName) => {
     const isDeleteConfirmed = window
-      .confirm(`Are you sure you want to delete this slide? Any presentation that use this slide will be broken.`)
+      .confirm(`Are you sure you want to delete this slide? Any presentations that use this slide will be broken.`)
 
     if (isDeleteConfirmed) {
       DELETE_FIRESTORE_DATA('slides', slideId)
@@ -257,7 +257,7 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
             pageSlides
           })
 
-          DELETE_FILE(slideId)
+          DELETE_FILE(fileName)
             .then(() => {
               setAlertData({
                 isOpen: true,
@@ -278,10 +278,10 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
 
   const handleCreateSlide = (slideData, slideFile) => {
     UPLOAD_FILE(slideFile)
-      .then((x) => {
+      .then(() => {
         return CREATE_FIRESTORE_DATA('slides', slideData)
       })
-      .then(() => {
+      .then((slideRef) => {
         setAlertData({
           isOpen: true,
           severity: 'success',
@@ -289,7 +289,7 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
         })
 
         const updatedSlides = [...slides]
-        updatedSlides.push(slideData)
+        updatedSlides.push({ ...slideData, id: slideRef.id })
         setSlides(updatedSlides)
 
         const { currentPageNumber, pageSize } = pageData

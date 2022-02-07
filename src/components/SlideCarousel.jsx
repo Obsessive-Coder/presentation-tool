@@ -110,7 +110,7 @@ export default function SlideCarousel(props) {
             alt={name}
             component="img"
             data-item-index={index}
-            src={`https://firebasestorage.googleapis.com/v0/b/presentation-tool-d1b24.appspot.com/o/slides%2F${fileName}?alt=media`}
+            src={`https://firebasestorage.googleapis.com/v0/b/microdried-261c8.appspot.com/o/slides%2F${fileName}?alt=media`}
             style={{ height: isFullscreen ? '95vh' : 'auto' }}
           />
         </Card>
