@@ -13,16 +13,22 @@ const defaultFormData = { email: '', password: '' }
 export default function Authentication({ isUserAuthenticated, handleDrawerToggle }) {
   const [formData, setFormData] = useState({ ...defaultFormData })
   const [authView, setAuthView] = useState('login')
-  const isLoginView = authView === 'login'
+
+  // NOTE: Commented out to disable registration.
+  // const isLoginView = authView === 'login'
 
   const handleSubmitCredentials = async (event) => {
     event.preventDefault()
 
     try {
       const { email, password } = formData
-      const isLoginView = authView === 'login'
-      const authMethod = isLoginView ? signInWithEmailAndPassword : createUserWithEmailAndPassword
-      await authMethod(FIREBASE_AUTH, email.toLowerCase().trim(), password.trim())
+
+      // NOTE: Commented out to disable registration.
+      // const isLoginView = authView === 'login'
+
+      // NOTE: Commented out to disable registration.
+      // const authMethod = isLoginView ? signInWithEmailAndPassword : createUserWithEmailAndPassword
+      await signInWithEmailAndPassword(FIREBASE_AUTH, email.toLowerCase().trim(), password.trim())
     } catch (error) {
       console.log(error.message)
     }
@@ -69,10 +75,12 @@ export default function Authentication({ isUserAuthenticated, handleDrawerToggle
           sx={{ my: '1rem' }}
         />
 
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Button type="button" color="info" onClick={() => setAuthView(isLoginView ? 'register' : 'login')}>
+        <Box display="flex" justifyContent="end" alignItems="center">
+          {/* NOTE: Commented out to disable registration. */}
+
+          {/* <Button type="button" color="info" onClick={() => setAuthView(isLoginView ? 'register' : 'login')}>
             {isLoginView ? 'Register for a new account' : 'Login to an existing account'}
-          </Button>
+          </Button> */}
 
           <Button
             type="submit"
