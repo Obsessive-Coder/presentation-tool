@@ -7,5 +7,5 @@ export const mdProducts = [
   'Broccoli', 'Brussels Sprout', 'Carrot', 'Cauliflower', 'Cherry', 'Corn', 'Cranberry',
   'Designer Grapes', 'Elderberry', 'Green Bean', 'Kale', 'Lemon', 'Lime', 'Mango', 'Okra',
   'Orange', 'Pea', 'Peach', 'Pineapple', 'Pomegranate', 'Potato', 'Raspberry', 'Rhubarb',
-  'Spinach', 'Squash', 'Strawberry', 'Sweet Potato', 'Tomato, Zucchini',
+  'Spinach', 'Squash', 'Strawberry', 'Sweet Potato', 'Tomato', 'Zucchini',
 ]
