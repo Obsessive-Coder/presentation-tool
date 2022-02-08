@@ -26,7 +26,6 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
   const [isLoading, setIsLoading] = useState(true)
   const [alertData, setAlertData] = useState({})
   const [slides, setSlides] = useState(null)
-  const [sortFilterSlides, setSortFilterSlides] = useState([])
   const [openingSlides, setOpeningSlides] = useState([])
   const [presentationSlides, setPresentationSlides] = useState([])
   const [pageData, setPageData] = useState({ ...defaultPageData })
@@ -43,11 +42,7 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
     const { pageSize } = pageData
     const startIndex = (pageNumber - 1) * pageSize
     const endIndex = pageNumber * pageSize
-
-    const currentSlides = sortFilterSlides.length > 0 ? [...sortFilterSlides] : [...slides]
-    const pageSlides = currentSlides.slice(startIndex, endIndex)
-
-    console.log(currentSlides)
+    const pageSlides = slides.slice(startIndex, endIndex)
 
     setPageData({
       ...pageData,
@@ -106,17 +101,13 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
     const { field, isAscending } = sortData
     const sortType = isAscending ? 'asc' : 'desc'
 
-    const currentSlides = sortFilterSlides.length > 0 ? [...sortFilterSlides] : [...slides]
-
-    const sortedSlides = sort(currentSlides)[sortType]((slide) => {
+    const sortedSlides = sort(slides)[sortType]((slide) => {
       if (field === 'mdProducts') {
         return slide[field][0].product
       }
 
       return slide[field]
     })
-
-    setSortFilterSlides(sortedSlides)
 
     const { pageSize } = pageData
     const pageSlides = sortedSlides.slice(0, pageSize)
@@ -135,8 +126,6 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
       const { pageSize } = pageData
       const pageSlides = slides.slice(0, pageSize)
 
-      setSortFilterSlides([])
-
       return setPageData({
         ...pageData,
         pageSlides,
@@ -144,12 +133,10 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
         pageCount: Math.ceil(slides.length / pageSize),
       })
     }
-
-    const currentSlides = sortFilterSlides.length > 0 ? [...sortFilterSlides] : [...slides]
     const filteredSlides = []
 
-    for (let i = 0; i < currentSlides.length; i++) {
-      const slide = currentSlides[i]
+    for (let i = 0; i < slides.length; i++) {
+      const slide = slides[i]
       const filterKeys = Object.keys(filters)
 
       for (let j = 0; j < filterKeys.length; j++) {
@@ -204,8 +191,6 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
       }
     }
 
-    setSortFilterSlides(filteredSlides)
-
     const { pageSize } = pageData
     const pageSlides = filteredSlides.slice(0, pageSize)
 
@@ -229,8 +214,7 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
 
     if (tempPresentationSlides.length === presentationSlides.length) {
       // Add slide data to the presentation slides.
-      const currentSlides = sortFilterSlides.length > 0 ? [...sortFilterSlides] : [...slides]
-      const slideData = currentSlides.filter(({ name }) => name === productName)[0]
+      const slideData = slides.filter(({ name }) => name === productName)[0]
 
       setPresentationSlides((previousSlides) => {
         let updatedSlides = []
@@ -261,11 +245,6 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
         .then(() => {
           const updatedSlides = slides.filter(({ id }) => id !== slideId)
           setSlides(updatedSlides)
-
-          if (sortFilterSlides.length > 0) {
-            const updatedSortFilterSlides = sortFilterSlides.filter(({ id }) => id !== slideId)
-            setSortFilterSlides(updatedSortFilterSlides)
-          }
 
           const { pageSize } = pageData
           const pageSlides = updatedSlides.slice(0, pageSize)
@@ -309,12 +288,6 @@ export default function Slides({ isUserAuthenticated, handleDrawerToggle }) {
         const updatedSlides = [...slides]
         updatedSlides.push({ ...slideData, id: slideRef.id })
         setSlides(updatedSlides)
-
-        if (sortFilterSlides.length > 0) {
-          const updatedSortFilterSlides = [...sortFilterSlides]
-          updatedSortFilterSlides.push({ ...slideData, id: slideRef.id })
-          setSortFilterSlides(updatedSortFilterSlides)
-        }
 
         const { currentPageNumber, pageSize } = pageData
         const startIndex = (currentPageNumber - 1) * pageSize
