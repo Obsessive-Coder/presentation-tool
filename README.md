@@ -22,14 +22,6 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### `npm run predeploy`
-Called by gh-pages when deploy is ran. See below.
-
-### `npm run deploy`
-Deploys the build folder to the specified Github repository and branch. Used for hosting on Github pages.
-
-**Note: Replace `[branchName]` and `[url]` with the appropriate values in the package.json.**
-
 ### `firebase deploy`
 Deploys the build folder to the Firebase Microdried project.
 
